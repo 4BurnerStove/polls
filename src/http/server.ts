@@ -2,8 +2,9 @@ import fastify from 'fastify'
 
 const app = fastify()
 
-app.get('/hello', () => {
-    return 'hello nlw'
+app.post('/polls', (req) => {
+    console.log(req.body)
+   
 })
 
 app.listen({ port:3333 }).then(() => {
