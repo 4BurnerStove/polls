@@ -13,6 +13,14 @@ export async function getPoll(app: FastifyInstance) {
         const poll = await prisma.poll.findUnique({
             where: {
                 id: pollId,
+            },
+            include: {
+                options: {
+                     select: {
+                        id: true,
+                        title: true
+                     }
+                }
             }
         })
     
