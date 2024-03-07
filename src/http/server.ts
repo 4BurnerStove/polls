@@ -8,8 +8,7 @@ const app = fastify()
 
 app.register(cookie, {
     secret: "polls-app", 
-    hook: 'onRequest', 
-    parseOptions: {}
+    hook: 'onRequest'
 })
 
 app.register(createPoll)
