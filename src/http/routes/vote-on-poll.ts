@@ -28,7 +28,13 @@ export async function voteOnPoll(app: FastifyInstance) {
                 }
             })
         
-            if(userPreviewsVoteOnPoll) {
+            if(userPreviewsVoteOnPoll && userPreviewsVoteOnPoll.pollOptionId !== pollOptionId) {
+              await prisma.vote.delete({
+                where: {
+                    id: userPreviewsVoteOnPoll.id,
+                }
+              })
+            } else if (userPreviewsVoteOnPoll){
                 return reply.status(400).send({message: 'You alreeady voted on this poll'})
             }
         }
