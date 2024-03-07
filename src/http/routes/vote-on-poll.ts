@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { randomUUID } from "node:crypto"
 import { prisma } from "../../lib/prisma"
 import { FastifyInstance } from "fastify"
 
@@ -14,8 +15,11 @@ export async function voteOnPoll(app: FastifyInstance) {
 
         const { pollOptionId } = voteOnPollBody.parse(req.body)
         const { pollId } = voteOnPollParams.parse(req.params)
-    
-    
+
+         const sessionId = randomUUID()
+         
+         
+
         return reply.status(201).send()
     })
 }
