@@ -4,7 +4,7 @@ import { prisma } from "../../lib/prisma"
 import { FastifyInstance } from "fastify"
 
 export async function voteOnPoll(app: FastifyInstance) {
-    app.post('/polls/:pollId/votes', async (req, reply) => {
+    app.get('/polls/:pollId/votes', async (req, reply) => {
         const voteOnPollBody = z.object({
             pollOptionId: z.string().uuid()
         })
@@ -30,6 +30,6 @@ export async function voteOnPoll(app: FastifyInstance) {
          }
 
          
-        return reply.status(201).send()
+        return reply.status(201).send({ sessionId})
     })
 }
