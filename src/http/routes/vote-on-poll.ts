@@ -4,7 +4,7 @@ import { prisma } from "../../lib/prisma"
 import { FastifyInstance } from "fastify"
 
 export async function voteOnPoll(app: FastifyInstance) {
-    app.get('/polls/:pollId/votes', async (req, reply) => {
+    app.post('/polls/:pollId/votes', async (request, reply) => {
         const voteOnPollBody = z.object({
             pollOptionId: z.string().uuid()
         })
@@ -13,10 +13,10 @@ export async function voteOnPoll(app: FastifyInstance) {
             pollId: z.string().uuid()        
         })
 
-        const { pollOptionId } = voteOnPollBody.parse(req.body)
-        const { pollId } = voteOnPollParams.parse(req.params)
+        const { pollOptionId } = voteOnPollBody.parse(request.body)
+        const { pollId } = voteOnPollParams.parse(request.params)
 
-         let { sessionId } = req.cookies
+         let { sessionId } = request.cookies
 
          if (!sessionId){
             sessionId = randomUUID()
