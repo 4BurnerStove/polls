@@ -16,10 +16,20 @@ export async function voteOnPoll(app: FastifyInstance) {
         const { pollOptionId } = voteOnPollBody.parse(req.body)
         const { pollId } = voteOnPollParams.parse(req.params)
 
-         const sessionId = randomUUID()
-         
-         
+         let { sessionId } = req.cookies
 
+         if (!sessionId){
+            sessionId = randomUUID()
+         
+            reply.setCookie('sessionId', sessionId, {
+               path: '/',
+               maxAge: 60 * 60 * 24 * 30, // 30 days
+               signed: true,
+               httpOnly: true,
+            })
+         }
+
+         
         return reply.status(201).send()
     })
 }
