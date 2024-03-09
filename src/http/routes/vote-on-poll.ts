@@ -2,6 +2,7 @@ import { z } from "zod"
 import { randomUUID, setEngine } from "node:crypto"
 import { prisma } from "../../lib/prisma"
 import { FastifyInstance } from "fastify"
+import { redis } from "../../lib/redis"
 
 export async function voteOnPoll(app: FastifyInstance) {
     app.post('/polls/:pollId/votes', async (request, reply) => {
@@ -27,13 +28,16 @@ export async function voteOnPoll(app: FastifyInstance) {
                     }
                 }
             })
-        
+
             if(userPreviewsVoteOnPoll && userPreviewsVoteOnPoll.pollOptionId !== pollOptionId) {
               await prisma.vote.delete({
                 where: {
                     id: userPreviewsVoteOnPoll.id,
                 }
               })
+              
+            await redis.zincrby(pollId, -1, userPreviewsVoteOnPoll.pollOptionId)
+
             } else if (userPreviewsVoteOnPoll){
                 return reply.status(400).send({message: 'You alreeady voted on this poll'})
             }
@@ -57,6 +61,8 @@ export async function voteOnPoll(app: FastifyInstance) {
                 pollOptionId
             }
         });
+
+        await redis.zincrby(pollId, 1, pollOptionId)
 
         return reply.status(201).send()
     })
