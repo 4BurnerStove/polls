@@ -52,6 +52,7 @@ export async function getPoll(app: FastifyInstance) {
                     return {
                         id: option.id,
                         title: option.title,
+                        // return score at options
                         score: (option.id in votes) ? votes[option.id] : 0
                     }
                 })
