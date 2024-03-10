@@ -37,7 +37,13 @@ export async function voteOnPoll(app: FastifyInstance) {
                 }
               })
               
-            await redis.zincrby(pollId, -1, userPreviewsVoteOnPoll.pollOptionId)
+          const votes = await redis.zincrby(pollId, -1, userPreviewsVoteOnPoll.pollOptionId)
+
+            
+        voting.publish(pollId, {
+            pollOptionId: userPreviewsVoteOnPoll.pollOptionId,
+            votes: Number(votes),
+        })
 
             } else if (userPreviewsVoteOnPoll){
                 return reply.status(400).send({message: 'You alreeady voted on this poll'})
@@ -63,11 +69,11 @@ export async function voteOnPoll(app: FastifyInstance) {
             }
         });
 
-        await redis.zincrby(pollId, 1, pollOptionId)
+       const votes = await redis.zincrby(pollId, 1, pollOptionId)
 
         voting.publish(pollId, {
             pollOptionId,
-            votes: 1,
+            votes: Number(votes),
         })
 
         return reply.status(201).send()
