@@ -1,5 +1,5 @@
 # NLW-Expert
-Projeto que fiz no dia 29/02/2024, esse projeto consiste em um estudo sobre Tailwind e typescript principalmente, a onde nele é possivel fazer anotações sejam elas gravadas ou digitadas, também é possivel fazer uma busca dentre as notas. 
+Projeto que fiz no dia 10/03/2024, esse projeto consiste em um estudo sobre Node.JS, Prisma e Fastify com a utiização de websockets.
 
 <p align="center">
   <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
